@@ -2,6 +2,7 @@
 <script src="/css/bootstrap.min.js"></script>
 <script src="/css/bootswatch.js"></script>
 <script src="/css/jquery.tools.min.js"></script>
+<script src="/css/system_scripts.js"></script>
 <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection">
 <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="/css/installUninstallSwitch.css" rel="stylesheet" type="text/css">
@@ -26,8 +27,12 @@ function submit_package(element) {
         alert("Installation failed, please try again. Exit code was: " + info);
         return;
     }
-    $('#packages-table').text("Installation in progress. . .");
-    
+    $('#packages-table').text("Installation in progress. . .The page will reload in 3 seconds:");    
+    reloadInXSecs( 3000 );
+}
+
+function reloadInXSecs( secs ){
+  setTimeout(function () { location.reload(1); }, secs);
 }
 
 function toggleOverlay(){
@@ -36,6 +41,7 @@ function toggleOverlay(){
     overlay.style.opacity = .8;
     if(overlay.style.display == "block"){
         overlay.style.display = "none";
+        location.reload(false)
     } else {
         overlay.style.display = "block";
     }
@@ -58,9 +64,23 @@ function getPackageResponse(url) {
         }
     });
 
-    return value;
+    return remote;
     
     //return value;
+}
+</script>
+<style type="text/css">
+div#overlay {
+    display: none;
+    z-index: 2;
+    background: #000;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+}
 }
 
 </script>
