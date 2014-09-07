@@ -5,11 +5,11 @@ if 'MY_HOME' not in os.environ:
 sys.path.append(os.environ['MY_HOME']+'/cgi-bin/api')
 sys.path.append(os.environ['MY_HOME']+'/cgi-bin/')
 from HTMLPageGenerator import *
-from cernvm import Response
 import cgi
 import cgitb
 from subprocess import Popen, PIPE
-
+from pm_api import check_group_installed
+import json
 cgitb.enable()
 
 from live_info import execute
@@ -31,9 +31,10 @@ def main():
     elif form['action'].value == 'uninstall' :
         output, errorcode = uninstallPackage(pName)
 
-    response = Response(0)
+    args = {'packages':[pname]}
+    response = check_group_installed(args)
         
     response.buildResponse(errorcode)
-    composeXMLDocument(response.xml)
+    composeJS(json.dumps(response))
 if __name__ == '__main__':
     main()
